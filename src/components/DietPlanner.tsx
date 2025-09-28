@@ -69,25 +69,49 @@ export const DietPlanner = ({ onBack }: DietPlannerProps) => {
           description: "Il piano alimentare è stato estratto dal documento.",
         });
 
-        // Simula i dati estratti dal PDF
+        // Simula i dati estratti dal PDF - Piano completo per tutta la settimana
         const extractedPlan = {
           "Lunedì": {
-            breakfast: "Colazione estratta da PDF: Avena integrale con frutti di bosco",
-            lunch: "Pranzo estratto da PDF: Riso integrale con verdure e legumi",
-            dinner: "Cena estratta da PDF: Pesce azzurro con insalata mista",
-            snacks: "Snack estratti da PDF: Frutta secca e semi"
+            breakfast: "Avena integrale con frutti di bosco freschi e noci",
+            lunch: "Riso integrale con verdure saltate e tofu marinato",
+            dinner: "Salmone al vapore con broccoli e carote",
+            snacks: "Frutta secca mista e una mela"
           },
           "Martedì": {
-            breakfast: "Smoothie verde con spinaci e banana",
-            lunch: "Quinoa con pollo e zucchine grigliate", 
-            dinner: "Salmone al forno con broccoli al vapore",
-            snacks: "Yogurt greco naturale con mandorle"
+            breakfast: "Smoothie proteico con spinaci, banana e semi di chia",
+            lunch: "Quinoa con pollo grigliato e zucchine",
+            dinner: "Petto di tacchino al forno con patate dolci",
+            snacks: "Yogurt greco con mandorle e mirtilli"
           },
           "Mercoledì": {
-            breakfast: "Toast integrale con avocado e pomodoro",
-            lunch: "Insalata di ceci e verdure crude",
-            dinner: "Petto di tacchino con patate dolci",
-            snacks: "Carote baby con hummus"
+            breakfast: "Toast integrale con avocado, pomodoro e semi di zucca",
+            lunch: "Insalata di ceci con verdure crude e olio EVO",
+            dinner: "Pesce bianco alla griglia con fagiolini",
+            snacks: "Carote baby con hummus di ceci"
+          },
+          "Giovedì": {
+            breakfast: "Porridge di quinoa con cannella e frutti rossi",
+            lunch: "Pasta integrale con sugo di verdure e basilico",
+            dinner: "Pollo al curry leggero con riso basmati",
+            snacks: "Una pera e noci pecan"
+          },
+          "Venerdì": {
+            breakfast: "Uova strapazzate con spinaci e pane integrale",
+            lunch: "Buddha bowl con legumi, verdure crude e tahina",
+            dinner: "Merluzzo al cartoccio con verdure di stagione",
+            snacks: "Smoothie di frutta e semi di lino"
+          },
+          "Sabato": {
+            breakfast: "Pancake integrali con frutti di bosco e miele",
+            lunch: "Risotto integrale con zucca e rosmarino",
+            dinner: "Bistecca ai ferri con insalata mista e pomodori",
+            snacks: "Crackers integrali con ricotta"
+          },
+          "Domenica": {
+            breakfast: "Granola fatta in casa con yogurt e frutta fresca",
+            lunch: "Zuppa di lenticchie con verdure e crostini",
+            dinner: "Orata al sale con contorno di verdure grigliate",
+            snacks: "Frullato di banana e burro di arachidi"
           }
         };
         
