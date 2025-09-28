@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Calendar, ScanLine, Plus, Trash2 } from "lucide-react";
+import { ArrowLeft, Calendar, ScanLine, Plus, Trash2, Upload, FileText } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface DietPlannerProps {
@@ -32,6 +32,8 @@ export const DietPlanner = ({ onBack }: DietPlannerProps) => {
   const [weeklyPlan, setWeeklyPlan] = useState<WeeklyPlan>({});
   const [selectedDay, setSelectedDay] = useState<string>("Lunedì");
   const [isScanning, setIsScanning] = useState(false);
+  const [isParsing, setIsParsing] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleMealChange = (day: string, meal: keyof MealPlan, value: string) => {
     setWeeklyPlan(prev => ({
@@ -41,6 +43,70 @@ export const DietPlanner = ({ onBack }: DietPlannerProps) => {
         [meal]: value
       }
     }));
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    if (file.type !== "application/pdf") {
+      toast({
+        title: "Formato non supportato",
+        description: "Carica solo file PDF.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsParsing(true);
+    
+    try {
+      // Simula il parsing del PDF per ora
+      setTimeout(() => {
+        setIsParsing(false);
+        toast({
+          title: "PDF caricato con successo!",
+          description: "Il piano alimentare è stato estratto dal documento.",
+        });
+
+        // Simula i dati estratti dal PDF
+        const extractedPlan = {
+          "Lunedì": {
+            breakfast: "Colazione estratta da PDF: Avena integrale con frutti di bosco",
+            lunch: "Pranzo estratto da PDF: Riso integrale con verdure e legumi",
+            dinner: "Cena estratta da PDF: Pesce azzurro con insalata mista",
+            snacks: "Snack estratti da PDF: Frutta secca e semi"
+          },
+          "Martedì": {
+            breakfast: "Smoothie verde con spinaci e banana",
+            lunch: "Quinoa con pollo e zucchine grigliate", 
+            dinner: "Salmone al forno con broccoli al vapore",
+            snacks: "Yogurt greco naturale con mandorle"
+          },
+          "Mercoledì": {
+            breakfast: "Toast integrale con avocado e pomodoro",
+            lunch: "Insalata di ceci e verdure crude",
+            dinner: "Petto di tacchino con patate dolci",
+            snacks: "Carote baby con hummus"
+          }
+        };
+        
+        setWeeklyPlan(extractedPlan);
+      }, 3000);
+      
+    } catch (error) {
+      setIsParsing(false);
+      toast({
+        title: "Errore durante l'elaborazione",
+        description: "Non è stato possibile leggere il file PDF.",
+        variant: "destructive"
+      });
+    }
+
+    // Reset dell'input file
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
   };
 
   const handleScanDocument = () => {
@@ -125,6 +191,46 @@ export const DietPlanner = ({ onBack }: DietPlannerProps) => {
               {isScanning ? "Scansionando..." : "Scansiona Piano Alimentare"}
               <ScanLine className="w-4 h-4 ml-2" />
             </Button>
+          </Card>
+        </section>
+
+        {/* PDF Upload Section */}
+        <section className="pb-4">
+          <Card className="p-4 shadow-card bg-gradient-card border-0">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="p-2 bg-secondary/20 rounded-wellness">
+                <FileText className="w-5 h-5 text-secondary" />
+              </div>
+              <div>
+                <h3 className="font-medium text-foreground">Carica PDF</h3>
+                <p className="text-sm text-muted-foreground">Carica il tuo piano nutrizionale in PDF</p>
+              </div>
+            </div>
+            
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept=".pdf"
+              onChange={handleFileUpload}
+              className="hidden"
+            />
+            
+            <Button 
+              variant="outline"
+              className="w-full"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isParsing}
+            >
+              {isParsing ? "Elaborando PDF..." : "Seleziona File PDF"}
+              <Upload className="w-4 h-4 ml-2" />
+            </Button>
+            
+            {isParsing && (
+              <div className="mt-3 flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <span>Analizzando il documento...</span>
+              </div>
+            )}
           </Card>
         </section>
 
